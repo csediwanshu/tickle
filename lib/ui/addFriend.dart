@@ -11,7 +11,7 @@ class _AddFriendState extends State<AddFriend>{
       appBar: AppBar(
       ),
       body: FutureBuilder(
-        builder: Tx('dbhkbdk'),
+        builder: list,
       ),
       
     );
