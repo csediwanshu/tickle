@@ -22,7 +22,7 @@ class FirebaseProvider {
     print("in current user================================");
     FirebaseUser currentUser;
     currentUser = await _auth.currentUser();
-    // print("after current user===================== $currentUser");
+    print("after current user===================== $currentUser");
     if(currentUser!=null)
     print("EMAIL ID : ${currentUser.email}");
     // _firestore.collection("display_names").document("axe").setData({'displayName': "hawa"});
@@ -85,6 +85,13 @@ class FirebaseProvider {
 
     return _firestore.collection("users").document(currentUser.uid).setData(user.toMap(user));
   }
+
+  Future<void> signOut() async {
+    await _googleSignIn.disconnect();
+    await _googleSignIn.signOut();
+    return await _auth.signOut();
+  }
+  
 }
 
 

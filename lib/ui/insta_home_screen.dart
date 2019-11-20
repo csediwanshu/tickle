@@ -1,10 +1,15 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tickle/resources/repository.dart';
-import 'package:tickle/ui/home_page.dart';
+import 'package:tickle/ui/addFriend.dart';
+import 'package:tickle/ui/login_screen.dart';
+import '../resources/repository.dart';
 
 
 class InstaHomeScreen extends StatefulWidget {
+  final FirebaseUser user ;
+  InstaHomeScreen(this.user);
   _InstaHomeScreenState createState() => _InstaHomeScreenState();
 }
 
@@ -12,34 +17,8 @@ class InstaHomeScreen extends StatefulWidget {
 
 class _InstaHomeScreenState extends State<InstaHomeScreen> {
 
-  // // int _page = 0;
-
-  // void navigationTapped(int page) {
-  //   //Animating Page
-  //   pageController.jumpToPage(page);
-  // }
-
-  // void onPageChanged(int page) {
-  //   setState(() {
-  //     // this._page = page;
-  //   });
-  // }
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   pageController = new PageController();
-  // }
-
-  // @override
-  // void dispose() {
-  //   super.dispose();
-  //   pageController.dispose();
-  // }
-
-  @override
   Widget build(BuildContext context) {
-
+    // Set<FirebaseUser> _user= {widget.user} ;
     return Scaffold(
       appBar: AppBar(
         title: Padding(
@@ -51,25 +30,65 @@ class _InstaHomeScreenState extends State<InstaHomeScreen> {
         backgroundColor: Colors.orange,
         actions: <Widget>[
           Padding(
-            padding: const EdgeInsets.all(15.0),
+            padding: const EdgeInsets.fromLTRB(0.0,15.0,10.0,0.0),
             child: Container(
               child: IconButton(
                 alignment: Alignment.center,
                 padding: const EdgeInsets.fromLTRB(0.0,0.0,15.0,20.0),
                 icon: Icon(Icons.add),
                 onPressed: (){
-                  addFriendToList;
+                  Navigator.pushReplacement(context, 
+                  MaterialPageRoute(
+                    builder: (context) {return AddFriend();}
+                    ),
+                  );
                 },
                 color: Colors.white,
                 iconSize: 30.0,
-              ),
-              
+              ),  
             ),
           ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(0.0,15.0,15.0,0.0),
+            child:  Container(
+              child: Text('${widget.user.displayName}',style: TextStyle(fontSize: 20.0),),
+           ), 
+          )  
         ],
-
       ),
-     body: homePage, 
+     body: Center(
+      child: Text('hi i am here'),
+    ), 
+    persistentFooterButtons: <Widget>[
+      GestureDetector(
+        child: Container(
+        width: 100.0,
+        height: 50.0,
+        decoration: BoxDecoration(
+            color: Color(0xFF4285F4),
+            border: Border.all(color: Colors.black)),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Center(
+             child: Text('Sign Out',style: TextStyle(color: Colors.white, fontSize: 20.0)),
+            )
+          ],
+        ),
+      ),
+      onTap: () {
+        print("in sign out");
+        repository.signOut().then((value) {
+          Navigator.pushReplacement(context, 
+          MaterialPageRoute(
+            builder: (context) {return LoginScreen();}
+            ),);
+        },);
+      },
+    ),
+  ],
+     
     );
   }
 
@@ -78,53 +97,3 @@ class _InstaHomeScreenState extends State<InstaHomeScreen> {
   }
 }
 
-
-// Text('djvjdvjhdvjhjd hi  you got hard work'),
-            // body: new PageView(
-            //   children: [
-            //     new Container(
-            //       color: Colors.white,
-            //       child: InstaFeedScreen(),
-            //     ),
-            //     new Container(color: Colors.white, child: InstaSearchScreen()),
-            //     new Container(
-            //       color: Colors.white,
-            //       child: InstaAddScreen(),
-            //     ),
-            //     new Container(
-            //         color: Colors.white, child: InstaActivityScreen()),
-            //     new Container(
-            //         color: Colors.white,
-            //         child: InstaProfileScreen()),
-            //   ],
-            //   controller: pageController,
-            //   physics: new NeverScrollableScrollPhysics(),
-            //   onPageChanged: onPageChanged,
-            // ),
-            // bottomNavigationBar: new CupertinoTabBar(
-            //   activeColor: Colors.orange,
-            //   items: <BottomNavigationBarItem>[
-            //     new BottomNavigationBarItem(
-            //         icon: new Icon(Icons.home, color: (_page == 0) ? Colors.black : Colors.grey),
-            //         title: new Container(height: 0.0),
-            //         backgroundColor: Colors.white),
-            //     new BottomNavigationBarItem(
-            //         icon: new Icon(Icons.search, color: (_page == 1) ? Colors.black : Colors.grey),
-            //         title: new Container(height: 0.0),
-            //         backgroundColor: Colors.white),
-            //     new BottomNavigationBarItem(
-            //         icon: new Icon(Icons.add_circle, color: (_page == 2) ? Colors.black : Colors.grey),
-            //         title: new Container(height: 0.0),
-            //         backgroundColor: Colors.white),
-            //     new BottomNavigationBarItem(
-            //         icon: new Icon(Icons.star, color: (_page == 3) ? Colors.black : Colors.grey),
-            //         title: new Container(height: 0.0),
-            //         backgroundColor: Colors.white),
-            //     new BottomNavigationBarItem(
-            //         icon: new Icon(Icons.person, color: (_page == 4) ? Colors.black : Colors.grey),
-            //         title: new Container(height: 0.0),
-            //         backgroundColor: Colors.white),
-            //   ],
-            //   onTap: navigationTapped,
-            //   currentIndex: _page,
-            // ),

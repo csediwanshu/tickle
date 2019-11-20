@@ -31,7 +31,7 @@ class MyAppState extends State<MyApp> {
           future: repository.getCurrentUser(),
           builder: (context, AsyncSnapshot<FirebaseUser> snapshot) {
             if (snapshot.hasData) {
-              return InstaHomeScreen();
+              return InstaHomeScreen(snapshot.data);
             } else {
               return LoginScreen();
             }
