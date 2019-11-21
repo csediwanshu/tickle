@@ -31,11 +31,12 @@ class MyAppState extends State<MyApp> {
           future: repository.getCurrentUser(),
           builder: (context, AsyncSnapshot<FirebaseUser> snapshot) {
             if (snapshot.hasData) {
-              return InstaHomeScreen(snapshot.data);
+              return InstaHomeScreen(user:snapshot.data);
             } else {
               return LoginScreen();
-            }
-          },
-        ));
+          }
+        },
+      ),
+    );
   }
 }

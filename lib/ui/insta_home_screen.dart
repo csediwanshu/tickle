@@ -9,7 +9,7 @@ import '../resources/repository.dart';
 
 class InstaHomeScreen extends StatefulWidget {
   final FirebaseUser user ;
-  InstaHomeScreen(this.user);
+  InstaHomeScreen({Key key,this.user}) : super(key: key);
   _InstaHomeScreenState createState() => _InstaHomeScreenState();
 }
 

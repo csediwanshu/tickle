@@ -1,7 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:tickle/buttons/custom_button.dart';
 import 'package:tickle/resources/repository.dart';
 import 'package:tickle/ui/insta_home_screen.dart';
+import 'package:tickle/ui/login.dart';
+import 'package:tickle/ui/register_user.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -31,6 +34,9 @@ class _LoginScreenState extends State<LoginScreen> {
               child: CustomButton(
                 text: 'Log In',
                 callback: (){
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
+                     return Login();
+                     }));
                 },
               ),
             ),
@@ -40,6 +46,9 @@ class _LoginScreenState extends State<LoginScreen> {
               child: CustomButton(
                 text: "Register",
                 callback: () {
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
+                     return RegisterUser();
+                     }));
                 },
               ),
             ),
@@ -89,40 +98,17 @@ class _LoginScreenState extends State<LoginScreen> {
         print("INSIDE IF");
         repository.addDataToDb(user).then((value) {
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-            return InstaHomeScreen(user);
+            return InstaHomeScreen(user:user);
           }));
         });
       } else {
         print("INSIDE ELSE");
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-          return InstaHomeScreen(user);
+          return InstaHomeScreen(user:user);
         }));
       }
     });
   }
 }
 
-  class CustomButton extends StatelessWidget {
-  final VoidCallback callback;
-  final String text;
-
-  const CustomButton({Key key, this.callback, this.text}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(8.0),
-      child: Material(
-        color: Colors.blueGrey,
-        elevation: 6.0,
-        borderRadius: BorderRadius.circular(30.0),
-        child: MaterialButton(
-          onPressed: callback,
-          minWidth: 250.0,
-          height: 50.0,
-          child: Text(text),
-        ),
-      ),
-    );
-  }
-}
 

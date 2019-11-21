@@ -14,7 +14,10 @@ class Repository {
 
   Future<void> signOut() => firebaseProvider.signOut();
 
-  
+  Future<void> registerUser(String email,String password) => firebaseProvider.registerUser(email, password);
+
+  Future<FirebaseUser> loginUser(String email,String password) => firebaseProvider.loginUser(email,password);
+
 }
 
 final Repository repository = new Repository();

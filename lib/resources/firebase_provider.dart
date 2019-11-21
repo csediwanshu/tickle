@@ -87,9 +87,27 @@ class FirebaseProvider {
   }
 
   Future<void> signOut() async {
+    print("in firebase_provider sign out");
     await _googleSignIn.disconnect();
     await _googleSignIn.signOut();
     return await _auth.signOut();
+  }
+
+  Future<void> registerUser(String email1,String password1) async{
+    print('In register USer');
+    // final FirebaseUser user = 
+    await _auth.createUserWithEmailAndPassword(
+      email: email1,
+      password: password1,
+    );
+    print('register user Suceesful');
+    // return user;
+  }
+
+  Future<FirebaseUser> loginUser(String email,String password) async{
+    print('In Login User');
+    final FirebaseUser user= await _auth.signInWithEmailAndPassword(email: email,password: password);
+    return user;
   }
   
 }
