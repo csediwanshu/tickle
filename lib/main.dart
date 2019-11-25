@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tickle/resources/repository.dart';
+import 'package:tickle/ui/addDescNewUser.dart';
 import 'package:tickle/ui/insta_home_screen.dart';
 import 'package:tickle/ui/login_screen.dart';
 
@@ -31,7 +33,14 @@ class MyAppState extends State<MyApp> {
           future: repository.getCurrentUser(),
           builder: (context, AsyncSnapshot<FirebaseUser> snapshot) {
             if (snapshot.hasData) {
-              return InstaHomeScreen(user:snapshot.data);
+              repository.authenticateUser(snapshot.data).then((value){
+                if(value){
+                  return AddDescNewUser(user: snapshot.data,);
+                }
+                else {
+                  return InstaHomeScreen(user:snapshot.data); 
+                }
+              });
             } else {
               return LoginScreen();
           }

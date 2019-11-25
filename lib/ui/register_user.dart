@@ -64,8 +64,7 @@ class _RegisterUserState extends State<RegisterUser>{
               await repository.registerUser(_email, _password).then((value){
                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
                   return Login();
-                } 
-                ));
+                } ));
               });
             },
           ),

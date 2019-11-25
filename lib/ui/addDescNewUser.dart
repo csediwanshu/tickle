@@ -5,24 +5,23 @@ import 'package:tickle/resources/repository.dart';
 import 'package:tickle/ui/insta_home_screen.dart';
 import 'package:tickle/ui/login_screen.dart';
 
-class AddFriend extends StatefulWidget{
-  // final String userEmail;
-  // AddFriend({Key key,this.userEmail}) :super(key :key);
-  _AddFriendState createState() => _AddFriendState();
+class AddDescNewUser extends StatefulWidget{
+  final FirebaseUser user;
+  AddDescNewUser({Key key,this.user}):super(key:key);
+  _AddDescNewUserState createState() => _AddDescNewUserState();
 }
 
-class _AddFriendState extends State<AddFriend>{
-  //  String _phoneNo;
+class _AddDescNewUserState extends State<AddDescNewUser>{
+   //  String _phoneNo;
    String _name;
-   String _email;
-
+   String _phoneNo;
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Padding(
           padding: const EdgeInsets.all(15.0),
           child: Container(
-            child: Text('TICKLE'),
+            child: Text('TICKLE '),
           ),
         ),
         backgroundColor: Colors.orange,
@@ -45,33 +44,33 @@ class _AddFriendState extends State<AddFriend>{
                  padding: EdgeInsets.all(20.0),
                  child: TextField(
                   onChanged: (value){
-                    _email = value;
+                    _phoneNo = value;
                   },
                   decoration: InputDecoration(
-                  hintText: 'Enter Email',
+                  hintText: 'Enter Phone No',
                   border: const OutlineInputBorder(),
                   ),
                 ),
               ),
             ),
-            // Container(
-            //   child: Padding(
-            //     padding: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 13.0),
-            //     child: TextField(
-            //       onChanged: (value){
-            //         _name = value;
-            //       },
-            //       decoration: InputDecoration(
-            //       hintText: 'Enter Name',
-            //       border: const OutlineInputBorder(),
-            //       ),
-            //     ),
-            //   ),
-            // ),
+            Container(
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 13.0),
+                child: TextField(
+                  onChanged: (value){
+                    _name = value;
+                  },
+                  decoration: InputDecoration(
+                  hintText: 'Enter Name',
+                  border: const OutlineInputBorder(),
+                  ),
+                ),
+              ),
+            ),
             RaisedButton(
               splashColor: Colors.orangeAccent,
               onPressed: (){
-                repository.createFriend(_email).then((value){
+                repository.fillUserDetails(widget.user.email,_phoneNo,_name).then((value){
                   if(value != null ){
                     Navigator.pushReplacement(context, MaterialPageRoute(
                       builder: (context){
@@ -81,7 +80,7 @@ class _AddFriendState extends State<AddFriend>{
                   }
                   else {
                     print('error');
-                    Text('Please Enter the correct email');
+                    Text('Please Enter the details do not empty');
                     Duration(seconds: 1);
                   }
                 });
@@ -127,4 +126,3 @@ class _AddFriendState extends State<AddFriend>{
     );
   }
 }
-

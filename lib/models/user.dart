@@ -1,4 +1,6 @@
 
+import 'dart:convert';
+
 class User {
 
    String uid;
@@ -10,8 +12,9 @@ class User {
    String posts;
    String bio;
    String phone;
+   List<User> friends;
 
-   User({this.uid, this.email, this.photoUrl, this.displayName, this.followers, this.following, this.bio, this.posts, this.phone});
+   User({this.uid, this.email, this.photoUrl, this.displayName, this.followers, this.following, this.bio, this.posts, this.phone,this.friends});
 
     Map toMap(User user) {
     var data = Map<String, dynamic>();
@@ -24,6 +27,7 @@ class User {
     data['bio'] = user.bio;
     data['posts'] = user.posts;
     data['phone'] = user.phone;
+    data['friends'] = user.friends;
     return data;
   }
 
@@ -37,6 +41,7 @@ class User {
     this.bio = mapData['bio'];
     this.posts = mapData['posts'];
     this.phone = mapData['phone']; 
+    this.friends = mapData['friends'];
   }
 }
 

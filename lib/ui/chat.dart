@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,13 +11,26 @@ class Chat extends StatefulWidget{
   _ChatState createState() => _ChatState();
 }
 class _ChatState extends State<Chat>{
+  TextEditingController messageController = TextEditingController();
+  ScrollController scrollController = ScrollController();
   Widget build(context){
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.orange,
         title: Text('TICKLE Chat'),
       ),
-      body: Text('i am chat'),
+      body: SafeArea(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Expanded(
+              child: StreamBuilder<QuerySnapshot>(
+                // s) ,
+              ),
+            )
+          ],
+        )
+      ),
     );
   }
 }

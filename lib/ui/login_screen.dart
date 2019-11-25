@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tickle/buttons/custom_button.dart';
 import 'package:tickle/resources/repository.dart';
@@ -7,7 +8,6 @@ import 'package:tickle/ui/login.dart';
 import 'package:tickle/ui/register_user.dart';
 
 class LoginScreen extends StatefulWidget {
-  @override
   _LoginScreenState createState() => _LoginScreenState();
 }
 

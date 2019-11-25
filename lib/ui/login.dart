@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tickle/buttons/custom_button.dart';
-import 'package:tickle/models/user.dart';
 import 'package:tickle/resources/repository.dart';
+import 'package:tickle/ui/addDescNewUser.dart';
 import 'package:tickle/ui/insta_home_screen.dart';
 
 class Login extends StatefulWidget{
@@ -10,7 +10,7 @@ class Login extends StatefulWidget{
 }
 
 class _LoginState extends State<Login>{
-  String _email;
+  String  _email;
   String _password;
   
   Widget build(context){
@@ -64,11 +64,20 @@ class _LoginState extends State<Login>{
             text: 'LOGIN',
             callback: () async {
               await repository.loginUser(_email, _password).then((user) async{
-                await repository.addDataToDb(user);
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
+                await repository.authenticateUser(user).then((value){
+                  if(!value){
+                     print('User Details added already');
+                     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
                   return InstaHomeScreen(user:user);
-                } 
-                ));
+                }));
+                }
+                else{
+                  print('user need to be added');
+                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
+                  return AddDescNewUser(user:user);
+                }));
+                }
+                });
               });
             },
           ),
@@ -78,4 +87,5 @@ class _LoginState extends State<Login>{
       ),
     );
   }
+  
 }

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,8 +18,11 @@ class InstaHomeScreen extends StatefulWidget {
 
 class _InstaHomeScreenState extends State<InstaHomeScreen> {
 
+  final Firestore _firestore = Firestore.instance;
+  TextEditingController messageController = TextEditingController();
+
   Widget build(BuildContext context) {
-    // Set<FirebaseUser> _user= {widget.user} ;
+
     return Scaffold(
       appBar: AppBar(
         title: Padding(
@@ -57,7 +61,16 @@ class _InstaHomeScreenState extends State<InstaHomeScreen> {
         ],
       ),
      body: Center(
-      child: Text('hi i am here'),
+      child: Column(
+        children: <Widget>[
+          Expanded(
+            child: StreamBuilder<QuerySnapshot>(
+              stream: _firestore.collection("friendsfrom${widget.user.displayName}").order,
+              builder: ,
+            ),
+          ),
+        ],
+      ),
     ), 
     persistentFooterButtons: <Widget>[
       GestureDetector(
@@ -92,8 +105,5 @@ class _InstaHomeScreenState extends State<InstaHomeScreen> {
     );
   }
 
- Widget  addFriendToList() {
-   
-  }
 }
 

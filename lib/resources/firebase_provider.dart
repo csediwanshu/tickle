@@ -62,7 +62,6 @@ class FirebaseProvider {
 
   Future<void> addDataToDb(FirebaseUser currentUser) async {
     print("Inside addDataToDb Method");
-
     _firestore
         .collection("display_names")
         .document(currentUser.displayName)
@@ -77,7 +76,8 @@ class FirebaseProvider {
         following: '0',
         bio: '',
         posts: '0',
-        phone: '');
+        phone: '',
+        friends: [],);
 
     //  Map<String, String> mapdata = Map<String, dynamic>();
 
@@ -88,30 +88,137 @@ class FirebaseProvider {
 
   Future<void> signOut() async {
     print("in firebase_provider sign out");
-    await _googleSignIn.disconnect();
-    await _googleSignIn.signOut();
+    bool signIn = await _googleSignIn.isSignedIn();
+    if(signIn){
+      await _googleSignIn.disconnect();
+      await _googleSignIn.signOut();
+    }
     return await _auth.signOut();
   }
 
   Future<void> registerUser(String email1,String password1) async{
     print('In register USer');
     // final FirebaseUser user = 
-    await _auth.createUserWithEmailAndPassword(
+   FirebaseUser user= await _auth.createUserWithEmailAndPassword(
       email: email1,
       password: password1,
     );
-    print('register user Suceesful');
+    print('register user Suceesful $user');
     // return user;
   }
 
   Future<FirebaseUser> loginUser(String email,String password) async{
     print('In Login User');
     final FirebaseUser user= await _auth.signInWithEmailAndPassword(email: email,password: password);
+
+    print('Login User ended  ${user.email}');
     return user;
   }
+
+  Future<FirebaseUser> createFriend(String email) async {
+     print("Inside createFriend Friend Email ====== $email");
+    final QuerySnapshot result = await _firestore.collection("users")
+        .where("email", isEqualTo: email)
+        .getDocuments();
+
+        final List<DocumentSnapshot> docs = result.documents;
+        User user3;
+        print('Docs length in createFriend ====== ${docs.length}');
+        for(int i=0;i<docs.length;i++){
+          // print('${docs[0].data['uid']}\n${docs[0].data['email']}\n${docs[0].data['displayName']}\n${docs[0].data['photoUrl']}\n');
+          user3 = User(
+        uid: docs[i].data['uid'],
+        email: docs[i].data['email'],
+        displayName: docs[i].data['displayName'],
+        photoUrl: docs[i].data['photoUrl'],
+        followers: '0',
+        following: '0',
+        bio: '',
+        posts: '0',
+        phone: '',
+        friends: [],);
+        }
+
+    if (docs.length == 0) {
+      return null;
+    } else {
+       FirebaseUser currentUser1;
+       currentUser1 = await _auth.currentUser();
+
+        // final QuerySnapshot result1 = await _firestore.collection("users")
+        //     .where("email", isEqualTo: currentUser1.email)
+        //     .getDocuments();
+        // final List<DocumentSnapshot> docs1 = result1.documents;
+        // List<User> user2=[];
+        // for(int i=0;i<docs1.length;i++){
+        //   print('111111111111');
+        //   user2 = docs1[i].data['friends'];
+        //   print('22222222222');
+        //   print('${docs1[i].data['friends']}');
+        // }
+        // user2.add(user3);
+        // print('size of friends of current user in Create friend &{user2.length}');
+        print('hawa===========================hawa');
+        await _firestore.collection("friendsfrom${currentUser1.email}").document(docs[0].data['email']).setData(user3.toMap(user3));
+        return currentUser1;
+    }
+
+  
+  }
+
+   Future<FirebaseUser> fillUserDetails(String email,String phoneNo,String name) async {
+     FirebaseUser currentUser1;
+     currentUser1 = await _auth.currentUser();
+
+      UserUpdateInfo updateInfo = UserUpdateInfo();
+      updateInfo.displayName = name;
+      await currentUser1.updateProfile(updateInfo);
+
+     _firestore
+        .collection("display_names")
+        .document(name)
+        .setData({'displayName': name,});
+
+
+     user = User(
+        uid: currentUser1.uid,
+        email: email,
+        displayName: name,
+        photoUrl: '',
+        followers: '0',
+        following: '0',
+        bio: '',
+        posts: '0',
+        phone: phoneNo,
+        friends: [],);
+        await _firestore.collection("users").document(currentUser1.uid).setData(user.toMap(user));
+        currentUser1 = await _auth.currentUser();
+        print('${currentUser1.displayName}');
+
+        return currentUser1;
+   }
+
+   Future<bool> CheckUserExist(String email) async{
+     print('In CheckUserExist $email');
+     final QuerySnapshot result = await _firestore.collection("users")
+        .where("email", isEqualTo: email)
+        .getDocuments();
+      final List<DocumentSnapshot> docs = result.documents;
+      print('CheckUserExist exist with ${docs.length}');
+      if(docs.length!=0){
+        return true;
+      }
+      else{
+        return false;
+      }
+   }
+
+  Stream<QuerySnapshot> getFirends() async {
+    FirebaseUser currentUser1;
+     currentUser1 = await _auth.currentUser();
+     final QuerySnapshot result =  _firestore.collection("friendsfrom${currentUser1.displayName}").getDocuments();
+     return result.do
+   }
   
 }
-
-
-
   final FirebaseProvider firebaseProvider = new  FirebaseProvider();
