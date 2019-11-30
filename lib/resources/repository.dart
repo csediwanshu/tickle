@@ -1,6 +1,8 @@
+// import 'dart:ffi';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:tickle/models/user.dart';
+import 'package:tickle/models/message.dart';
 import 'package:tickle/resources/firebase_provider.dart';
 
 
@@ -24,9 +26,13 @@ class Repository {
 
   Future<FirebaseUser> fillUserDetails(String email,String phoneNo,String name) => firebaseProvider.fillUserDetails(email,phoneNo,name);
 
-  Future<bool> CheckUserExist(String email) => firebaseProvider.CheckUserExist(email);
+  Future<bool> checkUserExist(String email) => firebaseProvider.checkUserExist(email);
 
-  Future<QuerySnapshot> getFriends() => firebaseProvider.getFirends();
+  Future<List<DocumentSnapshot>> getFriends() => firebaseProvider.getFirends();
+
+  Future<void> addMessages(String recieverEmail , Message message) => firebaseProvider.addMessages(recieverEmail,message);
+
+  // Stream<QuerySnapshot> getMessages(String receiverEmail) => firebaseProvider.getMessages(receiverEmail);
 }
 
 final Repository repository = new Repository();

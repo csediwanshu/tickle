@@ -1,10 +1,15 @@
 
+
+
 import 'package:firebase_auth/firebase_auth.dart';
+// import ':flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:tickle/models/message.dart';
 import 'dart:async';
 
 import 'package:tickle/models/user.dart';
+// import 'package:tickle/resources/repository.dart';
 
 
 class FirebaseProvider {
@@ -22,7 +27,7 @@ class FirebaseProvider {
     print("in current user================================");
     FirebaseUser currentUser;
     currentUser = await _auth.currentUser();
-    print("after current user===================== $currentUser");
+    // print("after current user===================== ${currentUser.email}");
     if(currentUser!=null)
     print("EMAIL ID : ${currentUser.email}");
     // _firestore.collection("display_names").document("axe").setData({'displayName': "hawa"});
@@ -46,13 +51,13 @@ class FirebaseProvider {
   }
   
   Future<bool> authenticateUser(FirebaseUser user) async {
-    print("Inside authenticateUser");
+    print("Inside authenticateUser============ ${user.email}");
     final QuerySnapshot result = await _firestore.collection("users")
         .where("email", isEqualTo: user.email)
         .getDocuments();
 
     final List<DocumentSnapshot> docs = result.documents;
-
+    print('In authenticateUser =============== ${docs.length}');
     if (docs.length == 0) {
       return true;
     } else {
@@ -198,7 +203,7 @@ class FirebaseProvider {
         return currentUser1;
    }
 
-   Future<bool> CheckUserExist(String email) async{
+   Future<bool> checkUserExist(String email) async{
      print('In CheckUserExist $email');
      final QuerySnapshot result = await _firestore.collection("users")
         .where("email", isEqualTo: email)
@@ -213,12 +218,55 @@ class FirebaseProvider {
       }
    }
 
-  Stream<QuerySnapshot> getFirends() async {
+  Future<List<DocumentSnapshot>> getFirends() async {
+    print('In getFriends===================');
     FirebaseUser currentUser1;
      currentUser1 = await _auth.currentUser();
-     final QuerySnapshot result =  _firestore.collection("friendsfrom${currentUser1.displayName}").getDocuments();
-     return result.do
+     print('In getFriends User ==================== ${currentUser1.email}');
+      QuerySnapshot result =  await _firestore.collection("friendsfrom${currentUser1.email}").getDocuments();
+      print('In end getFriends =======================${result.documents.length}');
+     return result.documents;
    }
-  
+
+   Future<void> addMessages(String receiverEmail,Message message) async{
+      //  Future<void> addMessageToDb(Message message, String receiverUid) async {
+    print("Message : ${message.message}");
+    var map = message.toMap();
+    
+    print("Map : $map");
+    await _firestore
+        .collection("messages")
+        .document(message.senderEmail)
+        .collection(receiverEmail)
+        .add(map);
+
+    return await _firestore
+        .collection("messages")
+        .document(receiverEmail)
+        .collection(message.senderEmail)
+        .add(map);
+        
+        
+
+
+
+
+
+
+
+
+  }
+     
+
+  //  Stream<QuerySnapshot> getMessages(String email) async{
+
+           
+  //    FirebaseUser currentUser1;
+  //    currentUser1 = await _auth.currentUser();
+  //    Stream<QuerySnapshot> results = _firestore.collection('messages').document(currentUser1.email).collection(currentUser1.email).orderBy('timestamp', descending: false).snapshots();
+
+    
+  //   return results;
+  //  }
 }
   final FirebaseProvider firebaseProvider = new  FirebaseProvider();

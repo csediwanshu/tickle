@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tickle/resources/repository.dart';
@@ -13,7 +12,7 @@ class AddFriend extends StatefulWidget{
 
 class _AddFriendState extends State<AddFriend>{
   //  String _phoneNo;
-   String _name;
+  //  String _name;
    String _email;
 
   Widget build(BuildContext context) {

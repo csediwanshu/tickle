@@ -31,21 +31,35 @@ class MyAppState extends State<MyApp> {
             textTheme: TextTheme(title: TextStyle(color: Colors.black))),
         home: FutureBuilder(
           future: repository.getCurrentUser(),
-          builder: (context, AsyncSnapshot<FirebaseUser> snapshot) {
-            if (snapshot.hasData) {
+          builder: (BuildContext context,  AsyncSnapshot<FirebaseUser> snapshot){
+            if(snapshot.hasData) {
               repository.authenticateUser(snapshot.data).then((value){
                 if(value){
-                  return AddDescNewUser(user: snapshot.data,);
+                  return Navigator.pushReplacement(context,MaterialPageRoute(
+                    builder: (context){return AddDescNewUser(user: snapshot.data,);}
+                    )
+                  ); 
                 }
                 else {
-                  return InstaHomeScreen(user:snapshot.data); 
-                }
-              });
-            } else {
-              return LoginScreen();
-          }
+                  return  Navigator.pushReplacement(context,MaterialPageRoute(
+                    builder: (context){
+                      return InstaHomeScreen(user:snapshot.data); 
+                      })); 
+                }});
+          } else {
+            return LoginScreen();
+        }
+        return Container(height: 11.0,width: .0,);
         },
       ),
+
+      // onGenerateRoute: (RouteSettings settings) {
+      //   return MaterialPageRoute(
+      //     builder: (context){
+      //       return 
+      //     },
+      //   );
+      // },
     );
   }
 }

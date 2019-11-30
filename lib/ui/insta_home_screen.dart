@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tickle/resources/repository.dart';
 import 'package:tickle/ui/addFriend.dart';
+import 'package:tickle/ui/chat.dart';
 import 'package:tickle/ui/login_screen.dart';
 import '../resources/repository.dart';
 
@@ -18,7 +19,6 @@ class InstaHomeScreen extends StatefulWidget {
 
 class _InstaHomeScreenState extends State<InstaHomeScreen> {
 
-  final Firestore _firestore = Firestore.instance;
   TextEditingController messageController = TextEditingController();
 
   Widget build(BuildContext context) {
@@ -60,18 +60,49 @@ class _InstaHomeScreenState extends State<InstaHomeScreen> {
           )  
         ],
       ),
-     body: Center(
-      child: Column(
-        children: <Widget>[
-          Expanded(
-            child: StreamBuilder<QuerySnapshot>(
-              stream: _firestore.collection("friendsfrom${widget.user.displayName}").order,
-              builder: ,
-            ),
+
+     body: Column(
+       children: <Widget>[
+         Expanded(
+           child: Container(
+            child: FutureBuilder(
+                  future: repository.getFriends(),
+                  builder: (BuildContext context,AsyncSnapshot<List<DocumentSnapshot>> snapshot){ 
+                  if(!snapshot.hasData){
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    else{
+                      return ListView.builder(
+                        itemCount: snapshot.data.length,
+                        itemBuilder: (BuildContext context,index){
+                          return ListTile(
+                            onTap: (){
+                              Navigator.pushReplacement(context,MaterialPageRoute(
+                                builder: (context){
+                                  print(snapshot.data[index].data['email']);
+                                  return Chat(email : snapshot.data[index].data['email'],user: widget.user);
+                                }
+                              ));
+                            },
+                            title: Text(snapshot.data[index].data['displayName']),
+                          );
+                        },
+                      );
+                    }
+                  },
+                ),
           ),
-        ],
-      ),
-    ), 
+         ),
+         Container(
+           height: 0.0,
+           width: 0.0,
+         ),
+       ],
+     ), 
+
+
     persistentFooterButtons: <Widget>[
       GestureDetector(
         child: Container(
