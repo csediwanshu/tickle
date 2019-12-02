@@ -29,30 +29,31 @@ class MyAppState extends State<MyApp> {
             primaryTextTheme: TextTheme(
                 title: TextStyle(color: Colors.black, fontFamily: "Aveny")),
             textTheme: TextTheme(title: TextStyle(color: Colors.black))),
-        home: FutureBuilder(
-          future: repository.getCurrentUser(),
-          builder: (BuildContext context,  AsyncSnapshot<FirebaseUser> snapshot){
-            if(snapshot.hasData) {
-              repository.authenticateUser(snapshot.data).then((value){
-                if(value){
-                  return Navigator.pushReplacement(context,MaterialPageRoute(
-                    builder: (context){return AddDescNewUser(user: snapshot.data,);}
-                    )
-                  ); 
-                }
-                else {
-                  return  Navigator.pushReplacement(context,MaterialPageRoute(
-                    builder: (context){
-                      return InstaHomeScreen(user:snapshot.data); 
-                      })); 
-                }});
-          } else {
-            return LoginScreen();
-        }
-        return Container(height: 11.0,width: .0,);
-        },
-      ),
-
+        home: Scaffold(
+          body: FutureBuilder(
+              future: repository.getCurrentUser(),
+              builder: (BuildContext context,  AsyncSnapshot<FirebaseUser> snapshot){
+                if(snapshot.hasData) {
+                  repository.authenticateUser(snapshot.data).then((value){
+                    if(value){
+                      return Navigator.pushReplacement(context,MaterialPageRoute(
+                        builder: (context){return AddDescNewUser(user: snapshot.data,);}
+                        )
+                      ); 
+                    }
+                    else {
+                      return  Navigator.pushReplacement(context,MaterialPageRoute(
+                        builder: (context){
+                          return InstaHomeScreen(user:snapshot.data); 
+                          })); 
+                    }});
+              } else {
+                return LoginScreen();
+            }
+            return Container(height: 11.0,width: .0,);
+            },
+          ),
+        ), 
       // onGenerateRoute: (RouteSettings settings) {
       //   return MaterialPageRoute(
       //     builder: (context){

@@ -19,11 +19,28 @@ class _ChatState extends State<Chat>{
 
   final Firestore _firestore = Firestore.instance;
   TextEditingController _messageController = TextEditingController();
-  // ScrollController scrollController = ScrollController();
- 
+  ScrollController scrollController = ScrollController();
+  _ChatState(){
+    initState();
+  }
+  void initState(){
+    super.initState();
+    // scrollController.jumpTo(scrollController.position.maxScrollExtent);
+    //  scrollController.animateTo(
+    //     scrollController.position.maxScrollExtent,
+    //     curve: Curves.easeOut,
+    //     duration: const Duration(milliseconds: 300),
+    //   );
+  }
   Widget build(context){
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: (){
+            Navigator.pop(context);
+          },
+        ),
         backgroundColor: Colors.orange,
         title: Text('TICKLE Chat'),
         actions: <Widget>[
@@ -50,6 +67,7 @@ class _ChatState extends State<Chat>{
                     );
                   } else {
                     return ListView.builder(
+                      controller: scrollController,
                       padding: EdgeInsets.all(10.0),
                       itemBuilder: (context, index) => chatMessageItem(snapshot.data.documents[index]),
                       itemCount: snapshot.data.documents.length,
@@ -98,11 +116,11 @@ class _ChatState extends State<Chat>{
 
         repository.addMessages(widget.email, _message);
       _messageController.clear();
-      //  scrollController.animateTo(
-      //   scrollController.position.maxScrollExtent,
-      //   curve: Curves.easeOut,
-      //   duration: const Duration(milliseconds: 300),
-      // );
+       scrollController.animateTo(
+        scrollController.position.maxScrollExtent,
+        curve: Curves.easeOut,
+        duration: const Duration(milliseconds: 300),
+      );
     }
   
   Widget chatMessageItem(DocumentSnapshot snapshot) {
