@@ -143,7 +143,7 @@ class _ChatState extends State<Chat>{
   Widget senderLayout(DocumentSnapshot snapshot) {
     return  Container(
             decoration: BoxDecoration(
-              color: Colors.grey[300],
+              color: Colors.lightBlueAccent[100],
               borderRadius: BorderRadius.circular(22.0),
             ),
             child: Padding(
@@ -155,7 +155,7 @@ class _ChatState extends State<Chat>{
   Widget receiverLayout(DocumentSnapshot snapshot) {
     return Container(
       decoration: BoxDecoration(
-          color: Colors.white30,
+          color: Colors.orangeAccent,
           borderRadius: BorderRadius.circular(24.0),
           border: Border.all(color: Colors.grey)),
       child: Padding(
