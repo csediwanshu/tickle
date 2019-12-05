@@ -1,10 +1,7 @@
-// import 'dart:ffi';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:tickle/models/message.dart';
-import 'package:tickle/resources/firebase_provider.dart';
-
+import '../models/message.dart';
+import 'package:tickle/src/resources/firebase_provider.dart';
 
 class Repository {
 

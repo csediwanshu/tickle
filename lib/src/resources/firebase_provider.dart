@@ -1,16 +1,9 @@
-
-
-
 import 'package:firebase_auth/firebase_auth.dart';
-// import ':flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:tickle/models/message.dart';
+import '../models/message.dart';
 import 'dart:async';
-
-import 'package:tickle/models/user.dart';
-// import 'package:tickle/resources/repository.dart';
-
+import '../models/user.dart';
 
 class FirebaseProvider {
   final FirebaseAuth _auth = FirebaseAuth.instance;

@@ -1,11 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:tickle/buttons/custom_button.dart';
-import 'package:tickle/resources/repository.dart';
-import 'package:tickle/ui/insta_home_screen.dart';
-import 'package:tickle/ui/login.dart';
-import 'package:tickle/ui/register_user.dart';
+import '../buttons/custom_button.dart';
+import 'package:tickle/src/resources/repository.dart';
+import 'package:tickle/src/ui/insta_home_screen.dart';
+import 'package:tickle/src/ui/login.dart';
+import 'package:tickle/src/ui/register_user.dart';
+
 
 class LoginScreen extends StatefulWidget {
   _LoginScreenState createState() => _LoginScreenState();

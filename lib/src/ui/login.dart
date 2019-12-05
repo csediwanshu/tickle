@@ -1,21 +1,22 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:tickle/buttons/custom_button.dart';
-import 'package:tickle/resources/repository.dart';
-import 'package:tickle/ui/login.dart';
+import '../buttons/custom_button.dart';
+import 'package:tickle/src/resources/repository.dart';
+import 'package:tickle/src/ui/addDescNewUser.dart';
+import 'package:tickle/src/ui/insta_home_screen.dart';
 
-class RegisterUser extends StatefulWidget{
-
-  _RegisterUserState createState() => _RegisterUserState();
+class Login extends StatefulWidget{
+  _LoginState createState() => _LoginState();
 }
-class _RegisterUserState extends State<RegisterUser>{
-  String _email;
+
+class _LoginState extends State<Login>{
+  String  _email;
   String _password;
+  
   Widget build(context){
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.orange,
-        title: Text('TICKLE Chat'),
+        title: Text('TICKLE LOGIN'),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -27,11 +28,11 @@ class _RegisterUserState extends State<RegisterUser>{
               child: Image.asset('assets/logo.png'),
             ),
           ),
-           SizedBox(
+          SizedBox(
             height: 40.0,
           ),
-           TextField(
-             keyboardType: TextInputType.emailAddress,
+          TextField(
+            keyboardType: TextInputType.emailAddress,
             onChanged: (value){
               _email=value;
             },
@@ -59,12 +60,23 @@ class _RegisterUserState extends State<RegisterUser>{
             height: 10.0,
           ),
           CustomButton(
-            text: 'Register',
+            text: 'LOGIN',
             callback: () async {
-              await repository.registerUser(_email, _password).then((value){
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
-                  return Login();
-                } ));
+              await repository.loginUser(_email, _password).then((user) async{
+                await repository.authenticateUser(user).then((value){
+                  if(!value){
+                     print('User Details added already');
+                     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
+                  return InstaHomeScreen(user:user);
+                }));
+                }
+                else{
+                  print('user need to be added');
+                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
+                  return AddDescNewUser(user:user);
+                }));
+                }
+                });
               });
             },
           ),
@@ -74,4 +86,5 @@ class _RegisterUserState extends State<RegisterUser>{
       ),
     );
   }
+  
 }

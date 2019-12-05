@@ -1,8 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:tickle/resources/repository.dart';
-import 'package:tickle/ui/insta_home_screen.dart';
-import 'package:tickle/ui/login_screen.dart';
+import 'package:tickle/src/resources/repository.dart';
+import 'package:tickle/src/ui/insta_home_screen.dart';
+import 'package:tickle/src/ui/login_screen.dart';
+
 
 class AddFriend extends StatefulWidget{
   // final String userEmail;

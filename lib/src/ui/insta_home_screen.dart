@@ -1,12 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:tickle/resources/repository.dart';
-import 'package:tickle/ui/addFriend.dart';
-import 'package:tickle/ui/chat.dart';
-import 'package:tickle/ui/login_screen.dart';
-import '../resources/repository.dart';
+import 'package:tickle/src/resources/repository.dart';
+import 'package:tickle/src/ui/addFriend.dart';
+import 'package:tickle/src/ui/chat.dart';
+import 'package:tickle/src/ui/login_screen.dart';
+
 
 
 class InstaHomeScreen extends StatefulWidget {
@@ -25,7 +24,8 @@ class _InstaHomeScreenState extends State<InstaHomeScreen> {
 
     return WillPopScope(
       onWillPop: (){
-        Navigator.pop(context);
+         Navigator.pop(context);
+         return null;
       },
       child: Scaffold(
         appBar: AppBar(
